@@ -39,7 +39,7 @@ class UsuarioController extends Controller
         $datosUSuario=request()->all();//se almacena toda la informacion que se envia desde el formulario en la variable
         
         $datosUSuario=request()->except('_token');
-
+//
         Usuario::insert($datosUSuario);
         
         //return response()->json($datosUSuario);

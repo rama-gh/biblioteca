@@ -37,17 +37,17 @@ Route::get('menu', function () {
 });
 
 //Rutas Libro
-Route::get('libros', 'LibroController@index');
+//Route::get('libros', 'LibroController@index');
 
-Route::get('libroPorId/{id}', 'LibroController@show');
+//Route::get('libroPorId/{id}', 'LibroController@show');
 
-Route::post('insert', 'LibroController@create')->name('libro.crear');
+Route::post('insert', 'LibroController@create')->name('libro.crear');   
 
-Route::put('actualizarLibro', 'LibroController@edit')->name('libro.editar');
+//Route::put('editarLibro', 'LibroController@update')->name('libro.editar');
 
 //Route::post('guardarLibro', 'LibroController@store')->name('libro.guardar');
 
-Route::delete('destroy/{id}', 'LibroController@destroy')->name('libro.eliminarLibro');
+//Route::delete('destroy/{id}', 'LibroController@destroy')->name('libro.eliminarLibro');
 
 Route::resource('libros','LibroController');
 

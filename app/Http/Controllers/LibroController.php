@@ -29,34 +29,11 @@ class LibroController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request) : string{
+    public function create(){
         
-        $request->validate([
-            'nombre' => 'required|max:50',
-            'id' => 'required|unique:libros',
-            'anio' => 'required|numeric'
-            /*---------------falta validar el idAutor---------------*/
-
-        ]);
-
-        $nuevoLibro = new Libro;
-        
-        $nuevoLibro->nombre = $request->nombre;
-        $nuevoLibro->id = $request->id;
-        $nuevoLibro->anio = $request->anio;
-        $nuevoLibro->estado = 1;
-
-        $idAutorConsulta = Autor::select('id')->where('nombre', 'Alejandro')->first();
-        $idAutor = $idAutorConsulta['id'];
-        
-        $nuevoLibro->idAutor = $idAutor;          
-        $nuevoLibro->save();
-
-        //return "Libro creado";
-        return back()->with('mensaje', 'Libro Agregado!');
+        return redirect('libros');
 
     }
             
@@ -69,7 +46,22 @@ class LibroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|max:50',
+            'id' => 'required|unique:libros',
+            'anio' => 'required|numeric'
+            /*---------------falta validar el idAutor---------------*/
+
+        ]);
+
+        $nuevoLibro = request()->all();
+        $nuevoLibro = request()->except('_token');
+
+        Libro::insert($nuevoLibro);
+        
+
+        //return "Libro creado";
+        return view('libros');
 
     }
 
@@ -88,23 +80,14 @@ class LibroController extends Controller
     /**
      * Edit and store the specified resource.
      *
-     * @param  request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id)
     {
-
-        $libro = Libro::findOrFail($request->id);
-
-        $libro->nombre = $request->nombre;
-        $libro->anio = $request->anio;
-        $libro->idAutor = $request->idAutor;
-
-        $libro->save();
+        $libro = Libro::findOrFail($id);
 
         return view('editLibro', compact('libro'));
-
-
     }
 
     /**
@@ -116,7 +99,15 @@ class LibroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $libro = Libro::findOrFail($id);
+
+        $libro->nombre = $request->nombre;
+        $libro->anio = $request->anio;
+        $libro->idAutor = $request->idAutor;
+
+        $libro->save();
+
+        return view('libros');
     }
 
     /**
