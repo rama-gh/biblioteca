@@ -23,7 +23,7 @@ class LibroController extends Controller
         //para retornar sin vista:
         //return compact('libros','autores');
 
-        return  view('libros', compact('libros','autores')); 
+        return view('libros', compact('libros','autores')); 
     }
 
     /**
@@ -54,14 +54,20 @@ class LibroController extends Controller
 
         ]);
 
-        $nuevoLibro = request()->all();
-        $nuevoLibro = request()->except('_token');
-
-        Libro::insert($nuevoLibro);
+        $nuevoLibro = new Libro;
         
+        $nuevoLibro->nombre = $request->nombre;
+        $nuevoLibro->id = $request->id;
+        $nuevoLibro->anio = $request->anio;
+        $nuevoLibro->estado = 1;
 
+        $idAutorConsulta = Autor::select('id')->where('nombre', 'Alejandro')->first();
+        $idAutor = $idAutorConsulta['id'];
+        
+        $nuevoLibro->idAutor = $idAutor;          
+        $nuevoLibro->save();
         //return "Libro creado";
-        return view('libros');
+        return back()->with('mensaje', 'Libro Agregado!');
 
     }
 
@@ -107,7 +113,11 @@ class LibroController extends Controller
 
         $libro->save();
 
-        return view('libros');
+        return redirect('libros');
+
+        /*$datosLibro=request()->except(['_token','_method']);
+        Libro::where('id','=',$id)->update($datosLibro);
+        return redirect('libros');*/
     }
 
     /**
@@ -120,7 +130,7 @@ class LibroController extends Controller
     {
         $libro = Libro::findOrFail($id);
         $libro->delete();
-        return "Libro eliminado correctamente";
+        return view('libos');
 
     }
 }

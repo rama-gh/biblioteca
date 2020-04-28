@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-            <form method="POST" action="{{ route('libro.crear') }}">
+            <form method="POST" action="{{ url('/libros') }}">
               @csrf
                     <div class="form-row">
                       <div class="form-group col-md-6">
