@@ -22,7 +22,7 @@
           <th scope="col">Apellido</th>
           <th scope="col">Nombre</th>
           <th scope="col">Dni</th>
-          <th scope="col">telefono</th>
+          <th scope="col">Telefono</th>
           <th scope="col">Accion</th>
         </tr>
       </thead>

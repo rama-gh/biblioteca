@@ -25,6 +25,8 @@
             <li class="">
               <a class="nav-link" href="{{url('/libros')}}" tabindex="-1" aria-disabled="true">Libros</a>
             </li>
+            <li class="">
+              <a class="nav-link" href="{{url('/autores')}}" tabindex="-1" aria-disabled="true">Autores</a>
             </li>
             <li class="">
               <a class="nav-link" href="{{url('/usuarios')}}" tabindex="-1" aria-disabled="true">Usuarios</a>

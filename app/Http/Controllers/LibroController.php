@@ -66,7 +66,7 @@ class LibroController extends Controller
         
         $nuevoLibro->idAutor = $idAutor;          
         $nuevoLibro->save();
-        //return "Libro creado";
+        
         return back()->with('mensaje', 'Libro Agregado!');
 
     }
@@ -126,11 +126,19 @@ class LibroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) : string
+    public function destroy($id)
     {
         $libro = Libro::findOrFail($id);
+
+        $cant = Libro::select('id')->where('idautor', $libro->idAutor)->count();
+
+        if($cant == 1){
+            $autor = Autor::findOrFail($libro->idAutor);
+            $autor->delete();
+        }
+
         $libro->delete();
-        return view('libos');
+        return redirect ('libros');
 
     }
 }

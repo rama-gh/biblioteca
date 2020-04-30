@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Autor;
+use App\Libro;
+
 
 class AutorController extends Controller
 {
@@ -16,8 +18,8 @@ class AutorController extends Controller
     {
         $autores = Autor::all();
         
-        return $autores;
-        //return  view('autores', compact('autores')); 
+        return view('autores', compact('autores'));
+        
     }
 
     /**
@@ -27,21 +29,7 @@ class AutorController extends Controller
      */
     public function create(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|max:50',
-            'apellido' => 'required|max:50',
-        ]);
         
-        $autorNuevo = new Autor;
-
-        $autorNuevo->nombre = $request->nombre;
-        $autorNuevo->apellido = $request->apellido;
-
-        $autorNuevo->save();
-
-        return "Autor agregado con exito";
-
-        //return back()->with('mensaje', 'Autor Agregado!');
     }
 
     /**
@@ -52,7 +40,21 @@ class AutorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|max:50',
+            'apellido' => 'required|max:50',
+        ]);
+        
+        $autorNuevo = new Autor; 
+
+        $autorNuevo->nombre = $request->nombre;
+        $autorNuevo->apellido = $request->apellido;
+
+        $autorNuevo->save();
+
+        //return "Autor agregado con exito";
+
+        return back()->with('mensaje', 'Autor Agregado!');
     }
 
     /**
@@ -73,24 +75,12 @@ class AutorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request) : string
+    public function edit($id)
     {
 
-        $request->validate([
-            'nombre' => 'required|max:50',
-            'apellido' => 'required|max:50',
-            'id'=>'required|max:11'
-        ]);
+        $autor = Autor::findOrFail($id);
 
-        $autorActualizado = Autor::findOrFail($request->id);
-        $autorActualizado->nombre = $request->nombre;
-        $autorActualizado->apellido = $request->apellido;
-
-        $autorActualizado->save();
-        
-        return "Autor actualizado";
-        
-        //return back()->with('mensaje', 'Autor editado!');
+        return view('editAutor', compact('autor'));
     }
 
     /**
@@ -102,7 +92,14 @@ class AutorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $autor = Autor::findOrFail($id);
+
+        $autor->nombre = $request->nombre;
+        $autor->apellido = $request->apellido;
+
+        $autor->save();
+
+        return redirect('autores');
     }
 
     /**
@@ -113,8 +110,16 @@ class AutorController extends Controller
      */
     public function destroy($id) : string
     {
+        $hayLibro = Libro::select('id')->where('idAutor', $id)->count();
+
+        if($hayLibro > 0){
+            return '<script language="javascript">alert("No se puede eliminar el autor, existe al menos un libro de su autoria");</script>';
+        
+        }
+    
         $autor = Autor::findOrFail($id);
         $autor->delete();
-        return "Autor eliminado con exito.";
+        return redirect('autores');
+
     }
 }

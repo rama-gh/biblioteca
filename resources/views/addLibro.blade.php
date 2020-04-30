@@ -28,7 +28,7 @@
                         <label for="autor">Autor</label>
                         <select id="autor" class="form-control">
                         @foreach($autores as $item)  
-                          <option selected>{{$item->nombre}}</option>
+                        <option selected>{{$item->nombre}} {{$item->apellido}}</option>
                         @endforeach()
                         </select>
 

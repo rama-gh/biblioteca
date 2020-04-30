@@ -36,10 +36,11 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
+        
         $datosUSuario=request()->all();//se almacena toda la informacion que se envia desde el formulario en la variable
         
         $datosUSuario=request()->except('_token');
-//
+
         Usuario::insert($datosUSuario);
         
         //return response()->json($datosUSuario);
